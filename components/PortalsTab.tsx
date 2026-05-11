@@ -132,7 +132,7 @@ export default function PortalsTab() {
                 </div>
 
                 <Dialog open={open} onOpenChange={setOpen}>
-                    <DialogTrigger asChild>
+                    <DialogTrigger>
                         <Button className="h-11 px-6 bg-zinc-900 hover:bg-zinc-800 text-white rounded-xl font-bold transition-all shadow-sm flex items-center gap-2">
                             <Plus className="w-4 h-4" /> Create Client Portal
                         </Button>
