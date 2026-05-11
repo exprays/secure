@@ -2,12 +2,12 @@ import PasswordsTab from '@/components/PasswordsTab';
 
 export default function PasswordsPage() {
     return (
-        <div className="space-y-12 max-w-6xl">
-            <div>
-                <h1 className="text-4xl font-black tracking-tighter text-black uppercase mb-2">Password Manager</h1>
-                <p className="text-black font-medium opacity-50 uppercase tracking-[0.2em] text-sm">Securely store and manage your credentials</p>
+        <div className="space-y-10 max-w-7xl">
+            <div className="space-y-1">
+                <h1 className="text-3xl font-bold tracking-tight text-zinc-900">Password Manager</h1>
+                <p className="text-zinc-500 text-sm">Securely store and manage your credentials in your private vault.</p>
             </div>
-            <div className="bg-white p-8 md:p-12 border-2 border-black">
+            <div>
                 <PasswordsTab />
             </div>
         </div>

@@ -4,8 +4,10 @@ import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowLeft, Copy, Eye, EyeOff, Trash2, Globe, ExternalLink } from 'lucide-react';
+import { ArrowLeft, Copy, Eye, EyeOff, Trash2, Globe, ExternalLink, Check } from 'lucide-react';
 import Link from 'next/link';
+import { cn } from '@/lib/utils';
+import { Label } from '@/components/ui/label';
 
 interface Password {
     id: number;
@@ -23,6 +25,7 @@ export default function PasswordDetailPage() {
     const [password, setPassword] = useState<Password | null>(null);
     const [showPass, setShowPass] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [copiedField, setCopiedField] = useState<string | null>(null);
 
     const fetchPassword = async () => {
         try {
@@ -52,14 +55,16 @@ export default function PasswordDetailPage() {
         }
     };
 
-    const copyToClipboard = (text: string) => {
+    const copyToClipboard = (text: string, field: string) => {
         navigator.clipboard.writeText(text);
+        setCopiedField(field);
+        setTimeout(() => setCopiedField(null), 2000);
     };
 
     if (loading) {
         return (
             <div className="flex items-center justify-center h-64">
-                <p className="text-xl font-black uppercase tracking-tighter animate-pulse">Loading Credential...</p>
+                <p className="text-sm font-medium text-zinc-500 animate-pulse uppercase tracking-widest">Loading Credential...</p>
             </div>
         );
     }
@@ -67,69 +72,69 @@ export default function PasswordDetailPage() {
     if (!password) return null;
 
     return (
-        <div className="space-y-12 max-w-4xl">
+        <div className="space-y-8 max-w-4xl">
             <div className="flex items-center justify-between">
                 <Link href="/dashboard/passwords">
-                    <Button variant="ghost" className="rounded-none font-black uppercase tracking-tighter hover:bg-black hover:text-white border-2 border-black h-12 px-6 transition-colors">
-                        <ArrowLeft className="mr-2 h-5 w-5" /> Back to Vault
+                    <Button variant="ghost" className="rounded-lg h-10 px-4 text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 font-medium text-sm transition-all">
+                        <ArrowLeft className="mr-2 h-4 w-4" /> Back to Vault
                     </Button>
                 </Link>
-                <Button 
+                <Button
                     onClick={handleDelete}
-                    variant="ghost" 
-                    className="rounded-none font-black uppercase tracking-tighter hover:bg-red-600 hover:text-white border-2 border-black h-12 px-6 transition-colors"
+                    variant="ghost"
+                    className="rounded-lg h-10 px-4 text-zinc-400 hover:text-red-600 hover:bg-red-50 font-medium text-sm transition-all"
                 >
-                    <Trash2 className="mr-2 h-5 w-5" /> Delete
+                    <Trash2 className="mr-2 h-4 w-4" /> Delete
                 </Button>
             </div>
 
-            <div className="space-y-6">
-                <div className="flex items-center space-x-6 pb-6 border-b-4 border-black">
-                    <div className="w-16 h-16 border-4 border-black flex items-center justify-center bg-black text-white shrink-0">
-                        <Globe className="w-8 h-8" />
+            <div className="bg-white rounded-2xl border border-zinc-200 shadow-sm overflow-hidden">
+                <div className="p-8 border-b border-zinc-100 flex items-center gap-6 bg-zinc-50/30">
+                    <div className="w-16 h-16 rounded-2xl bg-white border border-zinc-200 flex items-center justify-center shadow-sm">
+                        <Globe className="w-8 h-8 text-zinc-400" />
                     </div>
                     <div>
-                        <h1 className="text-4xl font-black uppercase tracking-tighter mb-1">{password.website_name}</h1>
-                        <p className="text-[10px] font-black opacity-30 uppercase tracking-[0.2em]">Stored on {new Date(password.created_at).toLocaleDateString()}</p>
+                        <h1 className="text-3xl font-bold tracking-tight text-zinc-900">{password.website_name}</h1>
+                        <p className="text-xs text-zinc-400 font-medium mt-1 uppercase tracking-widest">Added on {new Date(password.created_at).toLocaleDateString()}</p>
                     </div>
                 </div>
 
-                <div className="grid gap-8 pt-4">
-                    <div className="space-y-4">
-                        <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-30">Website Address</p>
-                        <div className="flex items-center justify-between p-6 border-2 border-black group">
-                            <a href={password.url} target="_blank" rel="noopener noreferrer" className="text-xl font-bold hover:underline flex items-center">
-                                {password.url} <ExternalLink className="ml-3 w-5 h-5 opacity-30 group-hover:opacity-100" />
+                <div className="p-8 space-y-10">
+                    <div className="space-y-3">
+                        <Label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Website Address</Label>
+                        <div className="flex items-center justify-between p-4 rounded-xl border border-zinc-100 bg-zinc-50 group transition-all hover:border-zinc-200">
+                            <a href={password.url} target="_blank" rel="noopener noreferrer" className="text-base font-semibold text-zinc-900 hover:underline flex items-center gap-2 truncate">
+                                {password.url} <ExternalLink className="w-4 h-4 text-zinc-300 group-hover:text-zinc-900 transition-colors" />
                             </a>
-                            <Button variant="ghost" onClick={() => copyToClipboard(password.url)} className="rounded-none border-2 border-black h-10 w-10 p-0 hover:bg-black hover:text-white">
-                                <Copy className="h-4 w-4" />
+                            <Button variant="ghost" onClick={() => copyToClipboard(password.url, 'url')} className="rounded-lg h-9 w-9 p-0 hover:bg-white border border-transparent hover:border-zinc-200">
+                                {copiedField === 'url' ? <Check className="h-4 w-4 text-green-600" /> : <Copy className="h-4 w-4 text-zinc-400" />}
                             </Button>
                         </div>
                     </div>
 
                     <div className="grid md:grid-cols-2 gap-8">
-                        <div className="space-y-4">
-                            <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-30">Account Username</p>
-                            <div className="flex items-center justify-between p-6 border-2 border-black bg-zinc-50">
-                                <p className="text-xl font-black uppercase tracking-tighter truncate">{password.username}</p>
-                                <Button variant="ghost" onClick={() => copyToClipboard(password.username)} className="rounded-none border-2 border-black h-10 w-10 p-0 hover:bg-black hover:text-white">
-                                    <Copy className="h-4 w-4" />
+                        <div className="space-y-3">
+                            <Label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Username</Label>
+                            <div className="flex items-center justify-between p-4 rounded-xl border border-zinc-100 bg-zinc-50 group transition-all hover:border-zinc-200">
+                                <p className="text-base font-semibold text-zinc-900 truncate">{password.username}</p>
+                                <Button variant="ghost" onClick={() => copyToClipboard(password.username, 'username')} className="rounded-lg h-9 w-9 p-0 hover:bg-white border border-transparent hover:border-zinc-200">
+                                    {copiedField === 'username' ? <Check className="h-4 w-4 text-green-600" /> : <Copy className="h-4 w-4 text-zinc-400" />}
                                 </Button>
                             </div>
                         </div>
 
-                        <div className="space-y-4">
-                            <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-30">Account Password</p>
-                            <div className="flex items-center justify-between p-6 border-2 border-black bg-zinc-50">
-                                <p className="text-xl font-mono font-bold tracking-[0.2em]">
+                        <div className="space-y-3">
+                            <Label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Password</Label>
+                            <div className="flex items-center justify-between p-4 rounded-xl border border-zinc-100 bg-zinc-50 group transition-all hover:border-zinc-200">
+                                <p className="text-base font-mono font-bold tracking-widest text-zinc-900 truncate">
                                     {showPass ? password.password : '••••••••••••'}
                                 </p>
-                                <div className="flex space-x-2">
-                                    <Button variant="ghost" onClick={() => setShowPass(!showPass)} className="rounded-none border-2 border-black h-10 w-10 p-0 hover:bg-black hover:text-white">
-                                        {showPass ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                                <div className="flex gap-1">
+                                    <Button variant="ghost" onClick={() => setShowPass(!showPass)} className="rounded-lg h-9 w-9 p-0 hover:bg-white border border-transparent hover:border-zinc-200">
+                                        {showPass ? <EyeOff className="h-4 w-4 text-zinc-400" /> : <Eye className="h-4 w-4 text-zinc-400" />}
                                     </Button>
-                                    <Button variant="ghost" onClick={() => copyToClipboard(password.password)} className="rounded-none border-2 border-black h-10 w-10 p-0 hover:bg-black hover:text-white">
-                                        <Copy className="h-4 w-4" />
+                                    <Button variant="ghost" onClick={() => copyToClipboard(password.password, 'password')} className="rounded-lg h-9 w-9 p-0 hover:bg-white border border-transparent hover:border-zinc-200">
+                                        {copiedField === 'password' ? <Check className="h-4 w-4 text-green-600" /> : <Copy className="h-4 w-4 text-zinc-400" />}
                                     </Button>
                                 </div>
                             </div>
@@ -137,10 +142,10 @@ export default function PasswordDetailPage() {
                     </div>
 
                     {password.notes && (
-                        <div className="space-y-2">
-                            <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-30">Additional Notes</p>
-                            <div className="p-4 border-2 border-black bg-zinc-50 max-h-[120px] overflow-y-auto">
-                                <p className="text-sm font-medium leading-relaxed uppercase tracking-tight whitespace-pre-wrap">{password.notes}</p>
+                        <div className="space-y-3">
+                            <Label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Additional Notes</Label>
+                            <div className="p-5 rounded-xl border border-zinc-100 bg-zinc-50 max-h-[160px] overflow-y-auto">
+                                <p className="text-sm text-zinc-600 leading-relaxed whitespace-pre-wrap">{password.notes}</p>
                             </div>
                         </div>
                     )}
