@@ -24,6 +24,7 @@ export default function PasswordsTab() {
     const [passwords, setPasswords] = useState<Password[]>([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [open, setOpen] = useState(false);
+    const [isCreating, setIsCreating] = useState(false);
     const [formData, setFormData] = useState({
         website_name: '',
         url: '',
@@ -52,14 +53,19 @@ export default function PasswordsTab() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        await fetch('/api/passwords', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData),
-        });
-        setFormData({ website_name: '', url: '', username: '', password: '', notes: '' });
-        setOpen(false);
-        fetchPasswords();
+        setIsCreating(true);
+        try {
+            await fetch('/api/passwords', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData),
+            });
+            setFormData({ website_name: '', url: '', username: '', password: '', notes: '' });
+            setOpen(false);
+            fetchPasswords();
+        } finally {
+            setIsCreating(false);
+        }
     };
 
     const filteredPasswords = passwords.filter(pwd =>
@@ -76,12 +82,12 @@ export default function PasswordsTab() {
                         placeholder="Search credentials..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="pl-10 h-10 border-zinc-200 rounded-lg text-sm focus-visible:ring-1 focus-visible:ring-zinc-400"
+                        className="pl-10 h-11 border-zinc-200 rounded-lg text-sm focus-visible:ring-1 focus-visible:ring-zinc-400"
                     />
                 </div>
 
                 <Dialog open={open} onOpenChange={setOpen}>
-                    <DialogTrigger className="h-10 px-4 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-white font-medium text-sm gap-2 flex items-center justify-center transition-colors">
+                    <DialogTrigger className="h-11 px-4 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-white font-medium text-sm gap-2 flex items-center justify-center transition-colors cursor-pointer">
                         <Plus className="w-4 h-4" /> Add Credential
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-[500px] rounded-xl border border-zinc-200 shadow-lg p-6">
@@ -142,7 +148,20 @@ export default function PasswordsTab() {
                                     className="rounded-lg border-zinc-200 focus-visible:ring-1 focus-visible:ring-zinc-400 min-h-[100px] resize-none"
                                 />
                             </div>
-                            <Button type="submit" className="w-full h-12 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg font-bold transition-all shadow-sm">Save to Vault</Button>
+                            <Button 
+                                type="submit" 
+                                disabled={isCreating}
+                                className="w-full h-12 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg font-bold transition-all shadow-sm mt-2 flex items-center justify-center gap-2"
+                            >
+                                {isCreating ? (
+                                    <>
+                                        <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                                        Saving to Vault...
+                                    </>
+                                ) : (
+                                    'Save to Vault'
+                                )}
+                            </Button>
                         </form>
                     </DialogContent>
                 </Dialog>

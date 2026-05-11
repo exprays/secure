@@ -21,6 +21,7 @@ export default function EnvFilesTab() {
     const [envFiles, setEnvFiles] = useState<EnvFile[]>([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [open, setOpen] = useState(false);
+    const [isCreating, setIsCreating] = useState(false);
     const [formData, setFormData] = useState({
         project_name: '',
         content: '',
@@ -46,14 +47,19 @@ export default function EnvFilesTab() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        await fetch('/api/env-files', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData),
-        });
-        setFormData({ project_name: '', content: '' });
-        setOpen(false);
-        fetchEnvFiles();
+        setIsCreating(true);
+        try {
+            await fetch('/api/env-files', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData),
+            });
+            setFormData({ project_name: '', content: '' });
+            setOpen(false);
+            fetchEnvFiles();
+        } finally {
+            setIsCreating(false);
+        }
     };
 
     const filteredFiles = envFiles.filter(file => 
@@ -69,12 +75,12 @@ export default function EnvFilesTab() {
                         placeholder="Search projects..." 
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="pl-10 h-10 border-zinc-200 rounded-lg text-sm focus-visible:ring-1 focus-visible:ring-zinc-400"
+                        className="pl-10 h-11 border-zinc-200 rounded-lg text-sm focus-visible:ring-1 focus-visible:ring-zinc-400"
                     />
                 </div>
                 
                 <Dialog open={open} onOpenChange={setOpen}>
-                    <DialogTrigger className="h-10 px-4 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-white font-medium text-sm gap-2 flex items-center justify-center transition-colors">
+                    <DialogTrigger className="h-11 px-4 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-white font-medium text-sm gap-2 flex items-center justify-center transition-colors cursor-pointer">
                         <Plus className="w-4 h-4" /> Add Project
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-[700px] w-[95vw] rounded-xl border border-zinc-200 shadow-lg p-6">
@@ -104,7 +110,20 @@ export default function EnvFilesTab() {
                                     required
                                 />
                             </div>
-                            <Button type="submit" className="w-full h-12 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg font-bold transition-all shadow-sm">Save Configuration</Button>
+                            <Button 
+                                type="submit" 
+                                disabled={isCreating}
+                                className="w-full h-12 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg font-bold transition-all shadow-sm mt-2 flex items-center justify-center gap-2"
+                            >
+                                {isCreating ? (
+                                    <>
+                                        <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                                        Saving Configuration...
+                                    </>
+                                ) : (
+                                    'Save Configuration'
+                                )}
+                            </Button>
                         </form>
                     </DialogContent>
                 </Dialog>

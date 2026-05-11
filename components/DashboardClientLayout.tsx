@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Shield, Key, FileText, LogOut, Menu, X, LayoutDashboard, Search } from 'lucide-react';
+import { Shield, Key, FileText, LogOut, Menu, X, LayoutDashboard, Search, Briefcase } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
@@ -26,6 +26,7 @@ export default function DashboardClientLayout({ children, username }: DashboardC
 
     const navItems = [
         { href: '/dashboard', label: 'Overview', icon: LayoutDashboard, exact: true },
+        { href: '/dashboard/workspaces', label: 'Workspaces', icon: Briefcase },
         { href: '/dashboard/passwords', label: 'Passwords', icon: Key },
         { href: '/dashboard/env-files', label: 'ENV Files', icon: FileText },
     ];
