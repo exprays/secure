@@ -27,6 +27,7 @@ export default function DashboardClientLayout({ children, username }: DashboardC
     const navItems = [
         { href: '/dashboard', label: 'Overview', icon: LayoutDashboard, exact: true },
         { href: '/dashboard/workspaces', label: 'Workspaces', icon: Briefcase },
+        { href: '/dashboard/portals', label: 'Client Portals', icon: LayoutDashboard },
         { href: '/dashboard/passwords', label: 'Passwords', icon: Key },
         { href: '/dashboard/env-files', label: 'ENV Files', icon: FileText },
     ];
@@ -53,7 +54,7 @@ export default function DashboardClientLayout({ children, username }: DashboardC
                     <div className="p-6">
                         <div className="flex items-center gap-2 font-bold text-xl tracking-tight mb-6 hidden md:flex">
                             <Shield className="w-6 h-6 text-zinc-900" />
-                            Secure
+                            sPANEL
                         </div>
 
                         <div className="relative mb-6">
