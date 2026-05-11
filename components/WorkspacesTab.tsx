@@ -71,7 +71,10 @@ export default function WorkspacesTab() {
     };
 
     useEffect(() => {
-        fetchWorkspaces();
+        const load = async () => {
+            await fetchWorkspaces();
+        };
+        load();
     }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -123,7 +126,7 @@ export default function WorkspacesTab() {
                             className="pl-10 h-11 border-zinc-200 rounded-lg text-sm focus-visible:ring-1 focus-visible:ring-zinc-400"
                         />
                     </div>
-                    <Select value={typeFilter} onValueChange={(v: any) => setTypeFilter(v)}>
+                    <Select value={typeFilter} onValueChange={(v) => v && setTypeFilter(v as any)}>
                         <SelectTrigger className="w-[140px] !h-11 border-zinc-200 rounded-lg text-sm">
                             <Filter className="w-3.5 h-3.5 mr-2 text-zinc-400" />
                             <SelectValue placeholder="Filter" />
@@ -158,7 +161,7 @@ export default function WorkspacesTab() {
                                 </div>
                                 <div className="space-y-2">
                                     <Label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Type</Label>
-                                    <Select value={formData.type} onValueChange={(v) => setFormData({ ...formData, type: v ?? 'Client' })}>
+                                    <Select value={formData.type} onValueChange={(v) => v && setFormData({ ...formData, type: v as any })}>
                                         <SelectTrigger className="!h-11 w-full border-zinc-200 rounded-lg">
                                             <SelectValue />
                                         </SelectTrigger>

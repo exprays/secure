@@ -27,25 +27,25 @@ export default function PasswordDetailPage() {
     const [loading, setLoading] = useState(true);
     const [copiedField, setCopiedField] = useState<string | null>(null);
 
-    const fetchPassword = async () => {
-        try {
-            const res = await fetch(`/api/passwords?id=${id}`);
-            if (!res.ok) {
-                router.push('/dashboard/passwords');
-                return;
-            }
-            const data = await res.json();
-            setPassword(data);
-        } catch (error) {
-            console.error('Error fetching password details:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
     useEffect(() => {
+        const fetchPassword = async () => {
+            try {
+                const res = await fetch(`/api/passwords?id=${id}`);
+                if (!res.ok) {
+                    router.push('/dashboard/passwords');
+                    return;
+                }
+                const data = await res.json();
+                setPassword(data);
+            } catch (error) {
+                console.error('Error fetching password details:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
         fetchPassword();
-    }, [id]);
+    }, [id, router]);
 
     const handleDelete = async () => {
         if (confirm('ARE YOU SURE YOU WANT TO DELETE THIS CREDENTIAL?')) {

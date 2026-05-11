@@ -6,8 +6,9 @@ import {
     Globe, Shield, Clock, ExternalLink, 
     FileText, CreditCard, Calendar, CheckCircle2, 
     MessageSquare, Info, Briefcase, User,
-    Rocket, ChevronRight, Download
+    Rocket, ChevronRight, Download, Code
 } from 'lucide-react';
+import { GithubIcon } from '@/components/icons/GithubIcon';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -88,7 +89,7 @@ export default function PublicPortalPage() {
 
     const { portal, content } = data;
 
-    const contentTypes: any = {
+    const contentTypes: Record<string, { label: string; icon: React.ElementType; color: string; bg: string }> = {
         update: { label: 'Project Update', icon: Info, color: 'text-blue-500', bg: 'bg-blue-50' },
         invoice: { label: 'Invoice', icon: CreditCard, color: 'text-emerald-500', bg: 'bg-emerald-50' },
         timeline: { label: 'Timeline Event', icon: Calendar, color: 'text-amber-500', bg: 'bg-amber-50' },
@@ -179,11 +180,11 @@ export default function PublicPortalPage() {
                         <div className="bg-zinc-900 rounded-3xl p-8 text-white relative overflow-hidden shadow-xl shadow-zinc-900/20">
                             <h3 className="text-xs font-bold text-white/40 uppercase tracking-[0.2em] mb-6">Live Links</h3>
                             <div className="space-y-3 relative z-10">
-                                {portal.deployment_url && (
-                                    <a href={portal.deployment_url.startsWith('http') ? portal.deployment_url : `https://${portal.deployment_url}`} target="_blank" rel="noopener noreferrer" className="block">
+                                {portal.repository_url && (
+                                    <a href={portal.repository_url.startsWith('http') ? portal.repository_url : `https://${portal.repository_url}`} target="_blank" rel="noopener noreferrer" className="block">
                                         <div className="flex items-center justify-between p-4 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/5 transition-all group/link">
                                             <span className="flex items-center gap-3 text-sm font-bold">
-                                                <Rocket className="w-4 h-4 text-white/60" /> Production
+                                                <GithubIcon className="w-4 h-4 text-white/60" /> Source Code
                                             </span>
                                             <ChevronRight className="w-4 h-4 text-white/30 group-hover/link:translate-x-1 transition-all" />
                                         </div>

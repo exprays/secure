@@ -24,11 +24,12 @@ async function migrate() {
             console.log(`Adding column ${col.name}...`);
             await db.execute(`ALTER TABLE workspaces ADD COLUMN ${col.name} ${col.type}`);
             console.log(`Successfully added ${col.name}`);
-        } catch (error: any) {
-            if (error.message.includes('duplicate column name')) {
+        } catch (error: unknown) {
+            const err = error as { message: string };
+            if (err.message.includes('duplicate column name')) {
                 console.log(`Column ${col.name} already exists, skipping.`);
             } else {
-                console.error(`Error adding column ${col.name}:`, error.message);
+                console.error(`Error adding column ${col.name}:`, err.message);
             }
         }
     }

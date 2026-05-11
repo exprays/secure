@@ -54,25 +54,31 @@ export default function WorkspaceDetailPage() {
         timeline: ''
     });
 
-    const fetchWorkspace = async () => {
-        try {
-            const res = await fetch(`/api/workspaces?id=${id}`);
-            if (!res.ok) {
-                router.push('/dashboard/workspaces');
-                return;
-            }
-            const data = await res.json();
-            setWorkspace(data);
-        } catch (error) {
-            console.error('Error fetching workspace details:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
     useEffect(() => {
+        const fetchWorkspace = async () => {
+            try {
+                const res = await fetch(`/api/workspaces?id=${id}`);
+                if (!res.ok) {
+                    router.push('/dashboard/workspaces');
+                    return;
+                }
+                const data = await res.json();
+                setWorkspace(data);
+                setMetaForm({
+                    invoices: data.invoices || '',
+                    docs_url: data.docs_url || '',
+                    api_keys: data.api_keys || '',
+                    timeline: data.timeline || ''
+                });
+            } catch (error) {
+                console.error('Error fetching workspace details:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
         fetchWorkspace();
-    }, [id]);
+    }, [id, router]);
 
     const updateWorkspace = async (updates: Partial<Workspace>) => {
         setIsUpdating(true);
@@ -97,16 +103,7 @@ export default function WorkspaceDetailPage() {
         setIsEditingMetadata(false);
     };
 
-    useEffect(() => {
-        if (workspace) {
-            setMetaForm({
-                invoices: workspace.invoices || '',
-                docs_url: workspace.docs_url || '',
-                api_keys: workspace.api_keys || '',
-                timeline: workspace.timeline || ''
-            });
-        }
-    }, [workspace]);
+
 
     const handleDelete = async () => {
         if (confirm('Are you sure you want to delete this workspace project?')) {
@@ -349,7 +346,7 @@ export default function WorkspaceDetailPage() {
                                         <div key={field.key} className="space-y-2">
                                             <Label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">{field.label}</Label>
                                             <Input 
-                                                value={(metaForm as any)[field.key]}
+                                                value={metaForm[field.key as keyof typeof metaForm]}
                                                 onChange={(e) => setMetaForm({ ...metaForm, [field.key]: e.target.value })}
                                                 className="h-10 rounded-xl border-zinc-300 bg-zinc-50 focus-visible:ring-zinc-900"
                                             />

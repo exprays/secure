@@ -39,8 +39,8 @@ async function migrate() {
             )
         `);
         console.log('Created portal_content table');
-    } catch (error: any) {
-        console.error('Migration error:', error.message);
+    } catch (error: unknown) {
+        console.error('Migration error:', (error as Error).message);
     }
 
     console.log('Migration finished.');

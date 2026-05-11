@@ -42,7 +42,10 @@ export default function EnvFilesTab() {
     };
 
     useEffect(() => {
-        fetchEnvFiles();
+        const load = async () => {
+            await fetchEnvFiles();
+        };
+        load();
     }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {

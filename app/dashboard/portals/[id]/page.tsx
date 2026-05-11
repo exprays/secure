@@ -78,9 +78,11 @@ export default function PortalDetailPage() {
     };
 
     useEffect(() => {
-        fetchPortal();
-        fetchContent();
-        setLoading(false);
+        const loadData = async () => {
+            await Promise.all([fetchPortal(), fetchContent()]);
+            setLoading(false);
+        };
+        loadData();
     }, [id]);
 
     const handleAddContent = async (e: React.FormEvent) => {
@@ -121,7 +123,7 @@ export default function PortalDetailPage() {
 
     if (loading || !portal) return null;
 
-    const contentTypes = [
+    const contentTypes: { value: string; label: string; icon: React.ElementType; color: string }[] = [
         { value: 'update', label: 'Project Update', icon: Info, color: 'text-blue-500' },
         { value: 'invoice', label: 'Invoice', icon: CreditCard, color: 'text-emerald-500' },
         { value: 'timeline', label: 'Timeline Event', icon: Calendar, color: 'text-amber-500' },
@@ -184,7 +186,7 @@ export default function PortalDetailPage() {
                                         <Label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Content Type</Label>
                                         <Select 
                                             value={newContent.type} 
-                                            onValueChange={(v) => setNewContent({ ...newContent, type: v })}
+                                            onValueChange={(v) => setNewContent({ ...newContent, type: v ?? 'update' })}
                                         >
                                             <SelectTrigger className="!h-11 border-zinc-300 rounded-xl">
                                                 <SelectValue />

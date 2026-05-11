@@ -28,25 +28,25 @@ export default function EnvFileDetailPage() {
     const [loading, setLoading] = useState(true);
     const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
-    const fetchEnvFile = async () => {
-        try {
-            const res = await fetch(`/api/env-files?id=${id}`);
-            if (!res.ok) {
-                router.push('/dashboard/env-files');
-                return;
-            }
-            const data = await res.json();
-            setFile(data);
-        } catch (error) {
-            console.error('Error fetching env file details:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
     useEffect(() => {
+        const fetchEnvFile = async () => {
+            try {
+                const res = await fetch(`/api/env-files?id=${id}`);
+                if (!res.ok) {
+                    router.push('/dashboard/env-files');
+                    return;
+                }
+                const data = await res.json();
+                setFile(data);
+            } catch (error) {
+                console.error('Error fetching env file details:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
         fetchEnvFile();
-    }, [id]);
+    }, [id, router]);
 
     const handleDelete = async () => {
         if (confirm('ARE YOU SURE YOU WANT TO DELETE THIS CONFIGURATION?')) {

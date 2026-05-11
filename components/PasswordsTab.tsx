@@ -48,7 +48,10 @@ export default function PasswordsTab() {
     };
 
     useEffect(() => {
-        fetchPasswords();
+        const load = async () => {
+            await fetchPasswords();
+        };
+        load();
     }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {

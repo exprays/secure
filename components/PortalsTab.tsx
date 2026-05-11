@@ -73,11 +73,13 @@ export default function PortalsTab() {
     };
 
     useEffect(() => {
-        fetchPortals();
-        fetchWorkspaces();
+        const load = async () => {
+            await Promise.all([fetchPortals(), fetchWorkspaces()]);
+        };
+        load();
     }, []);
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault();
         setIsCreating(true);
         try {

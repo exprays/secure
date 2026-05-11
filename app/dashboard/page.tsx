@@ -1,6 +1,6 @@
 import { verifySession } from '@/lib/auth';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Key, FileText, Activity, ShieldCheck, Clock, Shield } from 'lucide-react';
+import { Key, FileText, ShieldCheck, Clock, Shield } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
@@ -72,7 +72,7 @@ export default async function DashboardOverview() {
             <div className="bg-zinc-900 rounded-2xl p-8 text-white relative overflow-hidden">
                 <div className="relative z-10">
                     <h2 className="text-xl font-bold mb-2">Need Help?</h2>
-                    <p className="text-zinc-400 text-sm max-w-md mb-6">Learn more about how to secure your vault and manage your team's access controls.</p>
+                    <p className="text-zinc-400 text-sm max-w-md mb-6">Learn more about how to secure your vault and manage your team&apos;s access controls.</p>
                     <Button className="bg-white hover:bg-zinc-100 text-zinc-900 rounded-lg font-medium text-sm border-none px-6">Documentation</Button>
                 </div>
                 <Shield className="absolute right-[-20px] bottom-[-20px] w-64 h-64 text-white/5" />
