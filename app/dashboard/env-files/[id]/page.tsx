@@ -102,7 +102,7 @@ export default function EnvFileDetailPage() {
     const pairs = parseEnv(file.content);
 
     return (
-        <div className="space-y-8 max-w-5xl">
+        <div className="space-y-8 w-full">
             <div className="flex items-center justify-between">
                 <Link href="/dashboard/env-files">
                     <Button variant="ghost" className="rounded-lg h-10 px-4 text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 font-medium text-sm transition-all">
@@ -110,17 +110,17 @@ export default function EnvFileDetailPage() {
                     </Button>
                 </Link>
                 <div className="flex space-x-3">
-                    <Button 
+                    <Button
                         onClick={handleDownload}
-                        variant="ghost" 
+                        variant="ghost"
                         className="rounded-lg h-10 px-4 text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 font-medium text-sm transition-all border border-zinc-200"
                     >
                         <Download className="mr-2 h-4 w-4" /> Download .env
                     </Button>
-                    <Button 
+                    <Button
                         onClick={handleDelete}
-                        variant="ghost" 
-                        className="rounded-lg h-10 px-4 text-zinc-400 hover:text-red-600 hover:bg-red-50 font-medium text-sm transition-all"
+                        variant="ghost"
+                        className="rounded-lg h-10 px-4 bg-red-600 text-white hover:text-white/60 hover:bg-red-300 font-medium text-sm transition-all"
                     >
                         <Trash2 className="mr-2 h-4 w-4" /> Delete
                     </Button>
@@ -151,7 +151,7 @@ export default function EnvFileDetailPage() {
                         </Button>
                     </div>
 
-                    <div className="rounded-xl border border-zinc-200 overflow-hidden overflow-y-auto max-h-[calc(100vh-450px)] shadow-sm">
+                    <div className="rounded-xl border border-zinc-200 overflow-hidden shadow-sm">
                         <div className="grid grid-cols-[1fr_1fr_60px] gap-4 px-6 py-3 bg-zinc-50/50 border-b border-zinc-200 text-[10px] font-bold text-zinc-400 uppercase tracking-wider">
                             <div>Key</div>
                             <div>Value</div>
@@ -163,16 +163,13 @@ export default function EnvFileDetailPage() {
                                     {pair.key}
                                 </div>
                                 <div className="font-mono text-xs text-zinc-600 truncate overflow-hidden">
-                                    <span className={cn(
-                                        "transition-all block truncate break-all",
-                                        !showValues && "blur-[6px] select-none opacity-30"
-                                    )}>
-                                        {pair.value || 'EMPTY'}
+                                    <span className="transition-all block truncate break-all">
+                                        {showValues ? (pair.value || 'EMPTY') : '****************'}
                                     </span>
                                 </div>
                                 <div className="flex justify-end">
-                                    <Button 
-                                        variant="ghost" 
+                                    <Button
+                                        variant="ghost"
                                         onClick={() => copyToClipboard(pair.value, pair.key)}
                                         className="h-8 w-8 p-0 rounded-lg hover:bg-white border border-transparent hover:border-zinc-200 transition-all"
                                     >

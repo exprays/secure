@@ -72,16 +72,16 @@ export default function PasswordDetailPage() {
     if (!password) return null;
 
     return (
-        <div className="space-y-8 max-w-4xl">
+        <div className="space-y-8 w-full">
             <div className="flex items-center justify-between">
                 <Link href="/dashboard/passwords">
                     <Button variant="ghost" className="rounded-lg h-10 px-4 text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 font-medium text-sm transition-all">
                         <ArrowLeft className="mr-2 h-4 w-4" /> Back to Vault
                     </Button>
                 </Link>
-                <Button
+                <Button 
                     onClick={handleDelete}
-                    variant="ghost"
+                    variant="ghost" 
                     className="rounded-lg h-10 px-4 text-zinc-400 hover:text-red-600 hover:bg-red-50 font-medium text-sm transition-all"
                 >
                     <Trash2 className="mr-2 h-4 w-4" /> Delete
@@ -134,7 +134,7 @@ export default function PasswordDetailPage() {
                                         {showPass ? <EyeOff className="h-4 w-4 text-zinc-400" /> : <Eye className="h-4 w-4 text-zinc-400" />}
                                     </Button>
                                     <Button variant="ghost" onClick={() => copyToClipboard(password.password, 'password')} className="rounded-lg h-9 w-9 p-0 hover:bg-white border border-transparent hover:border-zinc-200">
-                                        {copiedField === 'password' ? <Check className="h-4 w-4 text-green-600" /> : <Copy className="h-4 w-4 text-zinc-400" />}
+                                        {copiedField === 'password' ? <Check className="h-4 w-4 text-green-600" /> : <Copy className="h-3.5 w-3.5 text-zinc-400" />}
                                     </Button>
                                 </div>
                             </div>
@@ -144,7 +144,7 @@ export default function PasswordDetailPage() {
                     {password.notes && (
                         <div className="space-y-3">
                             <Label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Additional Notes</Label>
-                            <div className="p-5 rounded-xl border border-zinc-100 bg-zinc-50 max-h-[160px] overflow-y-auto">
+                            <div className="p-5 rounded-xl border border-zinc-100 bg-zinc-50">
                                 <p className="text-sm text-zinc-600 leading-relaxed whitespace-pre-wrap">{password.notes}</p>
                             </div>
                         </div>

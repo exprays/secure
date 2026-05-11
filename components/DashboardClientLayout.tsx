@@ -65,7 +65,7 @@ export default function DashboardClientLayout({ children, username }: DashboardC
 
                         <div className="space-y-4">
                             <div>
-                                <h3 className="px-3 text-[10px] font-semibold text-zinc-400 uppercase tracking-wider mb-2">Hiring</h3>
+                                <h3 className="px-3 text-[10px] font-semibold text-zinc-400 uppercase tracking-wider mb-2">Navigation</h3>
                                 <nav className="space-y-1">
                                     {navItems.map((item) => {
                                         const isActive = item.exact ? pathname === item.href : pathname.startsWith(item.href);
@@ -95,7 +95,7 @@ export default function DashboardClientLayout({ children, username }: DashboardC
                             </div>
                             <div className="flex-1 overflow-hidden">
                                 <p className="text-xs font-bold text-zinc-900 truncate">{username}</p>
-                                <p className="text-[10px] text-zinc-400">Free plan</p>
+                                <p className="text-[10px] text-zinc-400">Admin Account</p>
                             </div>
                         </div>
                         <Button
@@ -119,8 +119,8 @@ export default function DashboardClientLayout({ children, username }: DashboardC
             )}
 
             {/* Main Content */}
-            <main className="flex-1 flex flex-col h-screen overflow-y-auto bg-white">
-                <div className="p-6 md:p-10 max-w-7xl w-full mx-auto">
+            <main className="flex-1 flex flex-col h-screen overflow-y-auto bg-white custom-scrollbar">
+                <div className="p-6 md:p-10 w-full mx-auto">
                     {children}
                 </div>
             </main>
